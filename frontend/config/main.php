@@ -10,7 +10,7 @@ return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    'languege' => ['zh-CN'], //语言
+    'languege' => 'zh-CN', //语言
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
         'request' => [
