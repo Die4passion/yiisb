@@ -16,12 +16,13 @@ use Yii;
  */
 class Brand extends \yii\db\ActiveRecord
 {
-    public $imgFile;
+//    public $imgFile;
     static public $statusOptions = [
         -1 => '已删除',
         0 => '已隐藏',
         1 => 'OK',
     ];
+
     /**
      * @inheritdoc
      */
@@ -41,7 +42,7 @@ class Brand extends \yii\db\ActiveRecord
             [['sort', 'status'], 'integer'],
             [['name'], 'string', 'max' => 50],
             [['logo'], 'string', 'max' => 255],
-            [['imgFile'], 'file', 'extensions' => ['jpg', 'png', 'gif']],
+//            [['imgFile'], 'file', 'extensions' => ['jpg', 'png', 'gif']],
         ];
     }
 
@@ -57,7 +58,7 @@ class Brand extends \yii\db\ActiveRecord
             'logo' => 'LOGO',
             'sort' => '排序',
             'status' => '状态',
-            'imgFile' => 'LOGO'
+//            'imgFile' => 'LOGO'
         ];
     }
 }
