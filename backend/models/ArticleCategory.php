@@ -56,4 +56,8 @@ class ArticleCategory extends \yii\db\ActiveRecord
             'is_help' => '类型',
         ];
     }
+//    public function getArticle()
+//    {
+//        return $this->hasMany(Article::className(), ['article_category_id' => 'id']);
+//    }
 }

@@ -45,7 +45,13 @@ return [
             'rules' => [
             ],
         ],
-
+        'qiniu' => [
+            'class' => \backend\components\Qiniu::className(),
+            'accessKey' => '9tJjG0SIiggx-6IYIaIFxtuzs94-8S1_l0ToaaoB',
+            'secretKey' => '-J258OqeSN8T8Yf0hlJjiOv5ByGCpy9UTi31O5WE',
+            'bucket' => 'die2',
+            'domain' => 'http://or9uphb1d.bkt.clouddn.com/',
+        ],
     ],
     'params' => $params,
 ];

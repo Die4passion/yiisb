@@ -6,6 +6,7 @@ use backend\models\Brand;
 use yii\data\Pagination;
 use yii\web\UploadedFile;
 use xj\uploadify\UploadAction;
+use backend\components\Qiniu;
 
 class BrandController extends \yii\web\Controller
 {
@@ -78,8 +79,10 @@ class BrandController extends \yii\web\Controller
         }
         return $this->render('add', ['model' => $model]);
     }
+
     //图片操作
-    public function actions() {
+    public function actions()
+    {
         return [
             's-upload' => [
                 'class' => UploadAction::className(),
@@ -114,15 +117,24 @@ class BrandController extends \yii\web\Controller
                 'beforeValidate' => function (UploadAction $action) {
                     //throw new Exception('test error');
                 },
-                'afterValidate' => function (UploadAction $action) {},
-                'beforeSave' => function (UploadAction $action) {},
+                'afterValidate' => function (UploadAction $action) {
+                },
+                'beforeSave' => function (UploadAction $action) {
+                },
                 'afterSave' => function (UploadAction $action) {
+                    $imgUrl = $action->getWebUrl();
+
                     $action->output['fileUrl'] = $action->getWebUrl();
-                    $action->getFilename(); // "image/yyyymmddtimerand.jpg"
-                    $action->getWebUrl(); //  "baseUrl + filename, /upload/image/yyyymmddtimerand.jpg"
-                    $action->getSavePath(); // "/var/www/htdocs/upload/image/yyyymmddtimerand.jpg"
+                    $qiniu = \Yii::$app->qiniu;
+                    $qiniu->uploadFile(\Yii::getAlias('@webroot').$imgUrl, $imgUrl);
+                    $url = $qiniu->getLink($imgUrl);
+                    $action->output['fileUrl'] = $url;
+//                    $action->getFilename(); // "image/yyyymmddtimerand.jpg"
+//                    $action->getWebUrl(); //  "baseUrl + filename, /upload/image/yyyymmddtimerand.jpg"
+//                    $action->getSavePath(); // "/var/www/htdocs/upload/image/yyyymmddtimerand.jpg"
                 },
             ],
         ];
     }
+
 }
