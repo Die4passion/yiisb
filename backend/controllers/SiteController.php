@@ -20,6 +20,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
+                'only' => ['logout','login','signup'],
                 'rules' => [
                     [
                         'actions' => ['login', 'error'],
@@ -50,6 +51,16 @@ class SiteController extends Controller
             'error' => [
                 'class' => 'yii\web\ErrorAction',
             ],
+            'captcha' => [
+                'class' => 'yii\captcha\CaptchaAction',
+                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+                'minLength' => 3,
+                'maxLength' => 3,
+                'width' => 80,
+                'offset' => 2,
+                'backColor'=> 0x2E0018,
+                'foreColor' => 0x24AA13,
+            ],
         ];
     }
 
@@ -60,7 +71,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        return $this->redirect(['admin/login']);
     }
 
     /**

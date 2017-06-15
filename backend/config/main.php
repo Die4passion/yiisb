@@ -18,9 +18,17 @@ return [
             'csrfParam' => '_csrf-backend',
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'backend\models\Admin',
             'enableAutoLogin' => true,
+            'authTimeout' => 3600*24*7,
+            'on beforeLogin' => function($event) {
+                $admin = $event->identity;
+                $admin->last_login_time = time();
+                $admin->last_login_ip = Yii::$app->request->userIP;
+                $admin->save();
+            },
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
+            'loginUrl' => ['admin/login'],
         ],
         'session' => [
             // this is the name of the session cookie used for login on the backend
@@ -54,4 +62,5 @@ return [
         ],
     ],
     'params' => $params,
+    'defaultRoute' => 'admin/index',
 ];

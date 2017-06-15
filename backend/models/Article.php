@@ -77,7 +77,7 @@ class Article extends \yii\db\ActiveRecord
      */
     public function getArticleDetails()
     {
-        return $this->hasMany(ArticleDetail::className(), ['article_id' => 'id']);
+        return $this->hasOne(ArticleDetail::className(), ['article_id' => 'id']);
     }
 
     public function beforeSave($insert)

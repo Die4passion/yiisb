@@ -16,8 +16,8 @@ class ArticleController extends Controller
     {
         $model = new Article();
         $detail = new ArticleDetail();
-        $cates = ArticleCategory::find()->all();
-        if ($model->load(\Yii::$app->request->post()) && $model->validate() && $detail->load(\Yii::$app->request->post())) {
+        $cates = ArticleCategory::find()->where(['<>', 'status', '-1'])->all();
+        if ($model->load(\Yii::$app->request->post()) && $detail->load(\Yii::$app->request->post()) && $model->validate() && $detail->validate()) {
             $model->save(false);
             //根据插入的文章查找id
             $detail->article_id = $model->findone(['name' => $model->name])->id;
@@ -45,8 +45,8 @@ class ArticleController extends Controller
     {
         $model = Article::findOne(['id' => $id]);
         $detail = ArticleDetail::findOne(['id' => $id]);
-        $cates = ArticleCategory::find()->all();
-        if ($model->save(\Yii::$app->request->post()) && $model->save()  && $detail->load(\Yii::$app->request->post())) {
+        $cates = ArticleCategory::find()->where(['<>', 'status', '-1'])->all();
+        if ($model->save(\Yii::$app->request->post()) && $model->save() && $detail->load(\Yii::$app->request->post())) {
             $model->save(false);
             $detail->article_id = $model->findone(['name' => $model->name])->id;
             $detail->save(false);
@@ -73,7 +73,7 @@ class ArticleController extends Controller
     }
 
     //查内容
-    public function actionContent($id=1)
+    public function actionContent($id = 1)
     {
         $model = Article::findOne(['id' => $id]);
         $detail = ArticleDetail::find()->where(['article_id' => $id])->one();

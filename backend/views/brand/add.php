@@ -45,7 +45,7 @@ EOF
     ]
 ]);
 if ($model->logo) {
-    echo \yii\bootstrap\Html::img('@web' . $model->logo, ['class' => 'img-rounded', 'style' => 'height:100px', 'id' => 'img-old']);
+    echo \yii\bootstrap\Html::img($model->logo, ['class' => 'img-rounded', 'style' => 'height:100px', 'id' => 'img-old']);
 }
 
 echo \yii\bootstrap\Html::img('', ['class' => 'img-rounded', 'style' => 'height:100px;display:none', 'id' => 'img-logo']);

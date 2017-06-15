@@ -28,22 +28,30 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'My Company',
+        'brandLabel' => '新时代的我们',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
     $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
+        ['label' => '商品分类', 'url' => ['/goods-category/index']],
+        ['label' => '品牌', 'url' => ['/brand/index']],
+        ['label' => '商品', 'url' => ['/goods/index']],
+        ['label' => '文章分类', 'url' => ['/article-category/index']],
+        ['label' => '文章', 'url' => ['/article/index']],
+        ['label' => '管理员', 'url' => ['/admin/index']],
     ];
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+//        $menuItems[] = ['label' => '注册', 'url' => ['/admin/signup']];
+        $menuItems[] = ['label' => '登录', 'url' => ['/admin/login']];
     } else {
+        //获取当前登录用户对应的菜单
+        $menuItems = \yii\helpers\ArrayHelper::merge($menuItems, Yii::$app->user->identity->getMenuItems());
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
+                '注销 (' . Yii::$app->user->identity->username . ')',
                 ['class' => 'btn btn-link logout']
             )
             . Html::endForm()
@@ -67,7 +75,7 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
+        <p class="pull-left">&copy; 达盖尔的旗帜 <?= date('Y-m-d') ?></p>
 
         <p class="pull-right"><?= Yii::powered() ?></p>
     </div>

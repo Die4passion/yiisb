@@ -123,7 +123,6 @@ class BrandController extends \yii\web\Controller
                 },
                 'afterSave' => function (UploadAction $action) {
                     $imgUrl = $action->getWebUrl();
-
                     $action->output['fileUrl'] = $action->getWebUrl();
                     $qiniu = \Yii::$app->qiniu;
                     $qiniu->uploadFile(\Yii::getAlias('@webroot').$imgUrl, $imgUrl);
