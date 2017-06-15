@@ -87,7 +87,7 @@ class BrandController extends \yii\web\Controller
             's-upload' => [
                 'class' => UploadAction::className(),
                 'basePath' => '@webroot/upload/brand',
-                'baseUrl' => '@web/upload',
+                'baseUrl' => '@web/upload/brand',
                 'enableCsrf' => true, // default
                 'postFieldName' => 'Filedata', // default
                 //BEGIN METHOD
