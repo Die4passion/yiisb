@@ -93,25 +93,25 @@ class AdminController extends Controller
         }
     }
     //行为
-    public function behaviors()
-    {
-        return [
-            'acf' => [
-                'class' =>AccessControl::className(),
-//                'only' => ['add', 'del', 'update', 'index','reset-password'],
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'actions' => ['login'],
-                        'roles' => ['?'],
-                    ],
-                    [
-                        'allow' => true,
-                        'actions' => ['add', 'del', 'update', 'index','reset-password'],
-                        'roles' => ['@'],
-                    ]
-                ],
-            ],
-        ];
-    }
+//    public function behaviors()
+//    {
+//        return [
+//            'acf' => [
+//                'class' =>AccessControl::className(),
+////                'only' => ['add', 'del', 'update', 'index','reset-password'],
+//                'rules' => [
+//                    [
+//                        'allow' => true,
+//                        'actions' => ['login'],
+//                        'roles' => ['?'],
+//                    ],
+//                    [
+//                        'allow' => true,
+//                        'actions' => ['add', 'del', 'update', 'index','reset-password'],
+//                        'roles' => ['@'],
+//                    ]
+//                ],
+//            ],
+//        ];
+//    }
 }
