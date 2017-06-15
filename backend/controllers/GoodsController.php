@@ -150,7 +150,7 @@ class GoodsController extends Controller
             //图片上传
             's-upload' => [
                 'class' => UploadAction::className(),
-                'basePath' => '@webroot/upload/logo',
+                'basePath' => '@webroot/upload/logo/goods',
                 'baseUrl' => '@web/upload/logo',
                 'enableCsrf' => true, // default
                 'postFieldName' => 'Filedata', // default
