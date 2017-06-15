@@ -25,7 +25,7 @@ return [
                 $admin = $event->identity;
                 $admin->last_login_time = time();
                 $admin->last_login_ip = Yii::$app->request->userIP;
-                $admin->save();
+                $admin->save(false);
             },
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
             'loginUrl' => ['admin/login'],
