@@ -122,10 +122,16 @@ class BrandController extends \yii\web\Controller
                 'beforeSave' => function (UploadAction $action) {
                 },
                 'afterSave' => function (UploadAction $action) {
-                    $action->output['fileUrl'] = $action->getWebUrl();
+                    //$action->output['fileUrl'] = $action->getWebUrl();
 //                    $action->getFilename(); // "image/yyyymmddtimerand.jpg"
 //                    $action->getWebUrl(); //  "baseUrl + filename, /upload/image/yyyymmddtimerand.jpg"
 //                    $action->getSavePath(); // "/var/www/htdocs/upload/image/yyyymmddtimerand.jpg"
+                    $imgUrl = $action->getWebUrl();
+                    $action->output['fileUrl'] = $action->getWebUrl();
+                    $qiniu = \Yii::$app->qiniu;
+                    $qiniu->uploadFile(\Yii::getAlias('@webroot') . $imgUrl, $imgUrl);
+                    $url = $qiniu->getLink($imgUrl);
+                    $action->output['fileUrl'] = $url;
                 },
             ],
         ];
