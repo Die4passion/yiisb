@@ -35,12 +35,16 @@ AppAsset::register($this);
         ],
     ]);
     $menuItems = [
-        ['label' => '商品分类', 'url' => ['/goods-category/index']],
+        ['label' => '商品分类','url' => ['/goods-category/index']],
         ['label' => '品牌', 'url' => ['/brand/index']],
         ['label' => '商品', 'url' => ['/goods/index']],
         ['label' => '文章分类', 'url' => ['/article-category/index']],
         ['label' => '文章', 'url' => ['/article/index']],
         ['label' => '管理员', 'url' => ['/admin/index']],
+        ['label' => 'RBAC', 'items' =>[
+            ['label' => '权限列表',  'url' =>['/rbac/permission-index']],
+            ['label' => '角色列表',  'url' =>['/rbac/role-index']],
+        ]]
     ];
     if (Yii::$app->user->isGuest) {
 //        $menuItems[] = ['label' => '注册', 'url' => ['/admin/signup']];

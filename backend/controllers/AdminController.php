@@ -6,6 +6,7 @@ namespace backend\controllers;
 use backend\models\Admin;
 use backend\models\LoginForm;
 use backend\models\ResetPasswordForm;
+use backend\models\RoleForm;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 
@@ -15,15 +16,18 @@ class AdminController extends Controller
     public function actionAdd()
     {
         $model = new Admin();
-        if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
+        $model->scenario = Admin::SCENARIO_REGISTER;
+        $roles = new RoleForm();
+        if ($model->load(\Yii::$app->request->post()) && $roles->load(\Yii::$app->request->post()) && $model->validate()) {
             if ($model->save()) {
+                $roles->userAddRoles($model->id);
                 \Yii::$app->session->setFlash('success', '新增管理-->' . $model->username . '成功');
             } else {
                 \Yii::$app->session->setFlash('warning', '添加失败！');
             }
             return $this->redirect(['admin/index']);
         }
-        return $this->render('add', ['model' => $model, 'title' => '新增管理']);
+        return $this->render('add', ['model' => $model, 'title' => '新增管理', 'roles' => $roles]);
     }
 
     //删
@@ -43,16 +47,18 @@ class AdminController extends Controller
     public function actionUpdate($id)
     {
         $model = Admin::findOne(['id' => $id]);
-        if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
+        $roles = new RoleForm();
+        $roles->userRoles = array_keys(\Yii::$app->authManager->getRolesByUser($id));
+        if ($model->load(\Yii::$app->request->post()) && $roles->load(\Yii::$app->request->post()) && $model->validate()) {
             if ($model->save()) {
+                $roles->userAddRoles($model->id);
                 \Yii::$app->session->setFlash('success', '修改管理-->' . $model->username . '成功');
-                \Yii::$app->session->setTimeout(200);
             } else {
                 \Yii::$app->session->setFlash('warning', '修改失败！');
             }
             return $this->redirect(['admin/index']);
         }
-        return $this->render('add', ['model' => $model, 'title' => '修改管理']);
+        return $this->render('add', ['model' => $model, 'title' => '修改管理', 'roles' => $roles]);
     }
 
     //查
@@ -92,12 +98,13 @@ class AdminController extends Controller
             return $this->render('reset-password', ['admin' => $admin, 'model' => $model]);
         }
     }
+
     //行为
     public function behaviors()
     {
         return [
             'acf' => [
-                'class' =>AccessControl::className(),
+                'class' => AccessControl::className(),
 //                'only' => ['add', 'del', 'update', 'index','reset-password'],
                 'rules' => [
                     [
@@ -107,7 +114,7 @@ class AdminController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['add', 'del', 'update', 'index','reset-password'],
+                        'actions' => ['add', 'del', 'update', 'index', 'reset-password'],
                         'roles' => ['@'],
                     ]
                 ],
