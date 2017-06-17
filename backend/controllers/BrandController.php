@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\filters\AdminFilter;
 use backend\models\Brand;
 use yii\data\Pagination;
 use yii\web\UploadedFile;
@@ -21,7 +22,7 @@ class BrandController extends \yii\web\Controller
             ->offset($page->offset)
             ->limit($page->limit)
             ->all();
-        return $this->render('index', ['models' => $models, 'page' => $page]);
+        return $this->render('index', ['models' => $models, 'page' => $page, 'title' => '品牌列表']);
     }
 
     //增
@@ -44,7 +45,7 @@ class BrandController extends \yii\web\Controller
                 die();
             }
         }
-        return $this->render('add', ['model' => $model]);
+        return $this->render('add', ['model' => $model, 'title' => '添加品牌']);
     }
 
     //删
@@ -77,7 +78,7 @@ class BrandController extends \yii\web\Controller
                 die();
             }
         }
-        return $this->render('add', ['model' => $model]);
+        return $this->render('add', ['model' => $model, 'title' => '编辑品牌']);
     }
 
     //图片操作
@@ -137,4 +138,13 @@ class BrandController extends \yii\web\Controller
         ];
     }
 
+    //权限规则
+    public function behaviors()
+    {
+        return [
+            'rbac' => [
+                'class' => AdminFilter::className(),
+            ],
+        ];
+    }
 }

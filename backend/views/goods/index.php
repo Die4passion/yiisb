@@ -1,5 +1,8 @@
 <?php
 //搜索
+$this->title = $title;
+//$this->params['breadcrumbs'][] = ['label'=>'','url'=>\yii\helpers\Url::to(['goods-category/index'])];
+$this->params['breadcrumbs'][] = $title;
 echo '<div class="container-fluid"><div class="row">';
 $form = \yii\bootstrap\ActiveForm::begin([
     'method' => 'get',
@@ -22,8 +25,6 @@ echo '<div class="col-lg-2">' . \yii\bootstrap\Html::submitButton('搜索', ['cl
 \yii\bootstrap\ActiveForm::end();
 echo '</div></div>';
 ?>
-
-    <h1>商品列表</h1>
     <table class="table table-responsive table-bordered">
         <tr>
             <td>ID</td>
@@ -45,8 +46,8 @@ echo '</div></div>';
                 <td style="text-align: center;"><?= $model->logo ? \yii\bootstrap\Html::img($model->logo, ['class' => 'img-rounded', 'height' => '50']) : '' ?></td>
                 <td><?= date('Y-m-d', $model->create_time) ?></td>
                 <td>
-                    <?= \yii\bootstrap\Html::a('编辑相册', ['goods/album', 'id' => $model->id], ['class' => 'btn btn-sm btn-info']) ?>
-                    <?= \yii\bootstrap\Html::a('修改', ['goods/update', 'id' => $model->id], ['class' => 'btn btn-sm btn-warning']) ?>
+                    <?= \yii\bootstrap\Html::a('编辑相册', ['goods/album', 'id' => $model->id], ['class' => 'btn btn-sm btn-primary']) ?>
+                    <?= \yii\bootstrap\Html::a('编辑', ['goods/update', 'id' => $model->id], ['class' => 'btn btn-sm btn-warning']) ?>
                     <?= \yii\bootstrap\Html::a('删除', ['goods/del', 'id' => $model->id], ['class' => 'btn btn-sm btn-danger']) ?>
                 </td>
             </tr>

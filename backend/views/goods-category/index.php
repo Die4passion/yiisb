@@ -1,8 +1,12 @@
-<table class="cate table table-bordered table-responsive">
+<?php
+$this->title = $title;
+//$this->params['breadcrumbs'][] = ['label'=>'商品首页','url'=>\yii\helpers\Url::to(['goods-category/index'])];
+$this->params['breadcrumbs'][] = $title;
+?>
+<table class="cate table table-bordered table-responsive table-hover">
     <tr>
         <th>ID</th>
         <th>名称</th>
-        <!--        <th>上级分类</th>-->
         <th>简介</th>
         <th>操作</th>
     </tr>

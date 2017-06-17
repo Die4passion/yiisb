@@ -3,10 +3,12 @@
 namespace backend\controllers;
 
 
+use backend\filters\AdminFilter;
 use backend\models\Admin;
 use backend\models\LoginForm;
 use backend\models\ResetPasswordForm;
 use backend\models\RoleForm;
+use yii\data\Pagination;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 
@@ -64,8 +66,16 @@ class AdminController extends Controller
     //查
     public function actionIndex()
     {
-        $models = Admin::find()->where(['<>', 'status', 0])->all();
-        return $this->render('index', ['models' => $models]);
+        $query = Admin::find()->where(['<>', 'status', 0]);
+        $page = new Pagination([
+            'defaultPageSize' => 7,
+            'totalCount' => $query->count(),
+        ]);
+        $models = $query->orderBy('id')
+            ->offset($page->offset)
+            ->limit($page->limit)
+            ->all();
+        return $this->render('index', ['models' => $models, 'page' => $page, 'title' => '管理员列表']);
     }
 
     //登陆
@@ -95,7 +105,7 @@ class AdminController extends Controller
             \Yii::$app->session->setFlash('success', '修改密码成功');
             return $this->redirect(['admin/index']);
         } else {
-            return $this->render('reset-password', ['admin' => $admin, 'model' => $model]);
+            return $this->render('reset-password', ['admin' => $admin, 'model' => $model, 'title' => '修改密码']);
         }
     }
 
@@ -103,21 +113,9 @@ class AdminController extends Controller
     public function behaviors()
     {
         return [
-            'acf' => [
-                'class' => AccessControl::className(),
-//                'only' => ['add', 'del', 'update', 'index','reset-password'],
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'actions' => ['login'],
-                        'roles' => ['?'],
-                    ],
-                    [
-                        'allow' => true,
-                        'actions' => ['add', 'del', 'update', 'index', 'reset-password'],
-                        'roles' => ['@'],
-                    ]
-                ],
+            'rbac' => [
+                'class' => AdminFilter::className(),
+                'only' => ['add', 'update', 'del', 'index', 'reset-password'],
             ],
         ];
     }

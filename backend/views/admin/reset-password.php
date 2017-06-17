@@ -1,6 +1,7 @@
 <?php
-
-echo '<h1>修改密码</h1>';
+$this->title = $title;
+//$this->params['breadcrumbs'][] = ['label'=>'文章列表','url'=>\yii\helpers\Url::to(['article/index'])];
+$this->params['breadcrumbs'][] = $title;
 
 $form = \yii\bootstrap\ActiveForm::begin();
 echo $form->field($model, 'username')->textInput(['readonly'=>true,'value'=>$admin->username]);

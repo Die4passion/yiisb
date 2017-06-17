@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 
+use backend\filters\AdminFilter;
 use backend\models\Goods;
 use backend\models\GoodsAlbum;
 use backend\models\GoodsCategory;
@@ -60,7 +61,7 @@ class GoodsController extends Controller
         } else {
             //获取所有分类选项
             $categories = ArrayHelper::merge([['id' => 0, 'name' => '顶级分类', 'parent_id' => 0]], GoodsCategory::find()->asArray()->all());
-            return $this->render('add', ['model' => $model, 'intro' => $intro, 'categories' => $categories]);
+            return $this->render('add', ['model' => $model, 'intro' => $intro, 'categories' => $categories, 'title' => '添加商品']);
         }
     }
 
@@ -102,7 +103,7 @@ class GoodsController extends Controller
         } else {
             //获取所有分类选项
             $categories = ArrayHelper::merge([['id' => 0, 'name' => '顶级分类', 'parent_id' => 0]], GoodsCategory::find()->asArray()->all());
-            return $this->render('add', ['model' => $model, 'intro' => $intro, 'categories' => $categories]);
+            return $this->render('add', ['model' => $model, 'intro' => $intro, 'categories' => $categories, 'title' => '编辑商品']);
         }
     }
 
@@ -120,7 +121,7 @@ class GoodsController extends Controller
             ->offset($page->offset)
             ->orderBy('id,sort')
             ->all();
-        return $this->render('index', ['models' => $models, 'page' => $page, 'search' => $search]);
+        return $this->render('index', ['models' => $models, 'page' => $page, 'search' => $search, 'title' => '商品列表']);
     }
 
     //商品相册
@@ -130,19 +131,22 @@ class GoodsController extends Controller
         if ($goods == null) {
             throw new NotFoundHttpException('商品不存在');
         }
-        return $this->render('album',['goods'=>$goods]);
+        $title = '编辑相册 of '.$goods->name;
+        return $this->render('album', ['goods' => $goods, 'title'=>$title]);
     }
+
     //ajax删除图片
     public function actionDelAlbum()
     {
         $id = \Yii::$app->request->post('id');
-        $model = GoodsAlbum::findOne(['id'=>$id]);
+        $model = GoodsAlbum::findOne(['id' => $id]);
         if ($model && $model->delete()) {
             return 'success';
         } else {
             return 'fail';
         }
     }
+
     //配置logo
     public function actions()
     {
@@ -197,5 +201,15 @@ class GoodsController extends Controller
             ]
         ];
 
+    }
+
+    //权限规则
+    public function behaviors()
+    {
+        return [
+            'rbac' => [
+                'class' => AdminFilter::className(),
+            ],
+        ];
     }
 }

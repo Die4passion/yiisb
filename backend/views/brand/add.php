@@ -1,6 +1,8 @@
 <?php
 use yii\web\JsExpression;
-
+$this->title = $title;
+$this->params['breadcrumbs'][] = ['label'=>'品牌列表','url'=>\yii\helpers\Url::to(['brand/index'])];
+$this->params['breadcrumbs'][] = $title;
 $form = \yii\bootstrap\ActiveForm::begin();
 echo $form->field($model, 'name');
 echo $form->field($model, 'intro')->textarea();

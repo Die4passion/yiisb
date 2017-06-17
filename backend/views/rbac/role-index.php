@@ -1,8 +1,14 @@
+<?php
+$this->title = $title;
+//$this->params['breadcrumbs'][] = ['label'=>'文章列表','url'=>\yii\helpers\Url::to(['article/index'])];
+$this->params['breadcrumbs'][] = $title;
+?>
 <table class="table table-bordered table-hover">
     <tr>
         <th>角色名</th>
         <th>描述</th>
         <th>权限</th>
+        <th>角色</th>
         <th>操作</th>
     </tr>
     <?php foreach ($models as $model): ?>
@@ -12,6 +18,10 @@
             <td><?php foreach (Yii::$app->authManager->getPermissionsByRole($model->name) as $permission) {
                 echo $permission->description;
                 echo '&emsp;';
+                } ?></td>
+            <td><?php foreach (Yii::$app->authManager->getUserIdsByRole($model->name) as $userid) {
+                    echo \backend\models\Admin::findOne(['id'=>$userid])->username;
+                    echo '&emsp;';
                 } ?></td>
             <td>
                 <?= \yii\bootstrap\Html::a('修改', ['rbac/update-role', 'name' => $model->name], ['class' => 'btn btn-warning btn-sm']) ?>

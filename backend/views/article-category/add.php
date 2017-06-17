@@ -1,4 +1,7 @@
 <?php
+$this->title = $title;
+$this->params['breadcrumbs'][] = ['label'=>'文章分类列表','url'=>\yii\helpers\Url::to(['article-category/index'])];
+$this->params['breadcrumbs'][] = $title;
 $form = \yii\bootstrap\ActiveForm::begin();
 echo $form->field($model, 'name');
 echo $form->field($model, 'intro')->textarea();

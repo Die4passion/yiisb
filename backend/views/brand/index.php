@@ -1,3 +1,8 @@
+<?php
+$this->title = $title;
+//$this->params['breadcrumbs'][] = ['label'=>'d','url'=>\yii\helpers\Url::to(['goods-category/index'])];
+$this->params['breadcrumbs'][] = $title;
+?>
 <table class="table table-bordered">
     <tr>
         <th>ID</th>
@@ -25,4 +30,4 @@
 </table>
 <?= \yii\widgets\LinkPager::widget(['pagination' => $page]) ?>
 <br>
-<?= \yii\bootstrap\Html::a('添加分类', ['brand/add'], ['class' => 'btn btn-success']) ?>
+<?= \yii\bootstrap\Html::a('添加品牌', ['brand/add'], ['class' => 'btn btn-info']) ?>

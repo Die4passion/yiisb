@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 
+use backend\filters\AdminFilter;
 use backend\models\PermissionForm;
 use backend\models\RoleForm;
 use yii\web\Controller;
@@ -18,17 +19,17 @@ class RbacController extends Controller
     {
         $model = new PermissionForm();
         if ($model->load(\Yii::$app->request->post()) && $model->validate() && $model->addPermission()) {
-            \Yii::$app->session->setFlash('success', '权限添加成功!');
+            \Yii::$app->session->setFlash('success', '权限'.$model->name.'添加成功!');
             return $this->redirect(['rbac/permission-index']);
         }
-        return $this->render('add-permission', ['model' => $model]);
+        return $this->render('add-permission', ['model' => $model, 'title' => '添加权限']);
     }
 
     //权限列表
     public function actionPermissionIndex()
     {
         $models = \Yii::$app->authManager->getPermissions();
-        return $this->render('permission-index', ['models' => $models]);
+        return $this->render('permission-index', ['models' => $models, 'title' => '权限列表']);
     }
 
     //修改权限
@@ -41,10 +42,10 @@ class RbacController extends Controller
             //将要修改的权限赋值给表单模型
             $model->loadPermission($permission);
             if ($model->load(\Yii::$app->request->post()) && $model->validate() && $model->updatePermission($name)) {
-                \Yii::$app->session->setFlash('success', '权限修改成功');
+                \Yii::$app->session->setFlash('success', '权限'.$model->name.'修改成功!');
                 return $this->redirect(['rbac/permission-index']);
             }
-            return $this->render('add-permission', ['model' => $model]);
+            return $this->render('add-permission', ['model' => $model, 'title' => '修改权限']);
         } else {
             throw new NotFoundHttpException($name . '权限不存在');
         }
@@ -74,14 +75,14 @@ class RbacController extends Controller
             \Yii::$app->session->setFlash('success', '角色' . $model->name . '添加成功！');
             return $this->redirect(['rbac/role-index']);
         }
-        return $this->render('add-role', ['model' => $model]);
+        return $this->render('add-role', ['model' => $model, 'title' => '添加角色']);
     }
 
     //角色列表
     public function actionRoleIndex()
     {
         $models = \Yii::$app->authManager->getRoles();
-        return $this->render('role-index', ['models' => $models]);
+        return $this->render('role-index', ['models' => $models, 'title' => '角色列表']);
     }
 
     //修改角色
@@ -95,7 +96,7 @@ class RbacController extends Controller
                 \Yii::$app->session->setFlash('success', '角色' . $model->name . '修改成功!');
                 return $this->redirect(['rbac/role-index']);
             }
-            return $this->render('add-role', ['model' => $model]);
+            return $this->render('add-role', ['model' => $model, 'title' => '修改角色']);
         } else {
             throw new NotFoundHttpException('角色' . $name . '不存在');
         }
@@ -112,5 +113,15 @@ class RbacController extends Controller
         } else {
             throw new NotFoundHttpException('角色' . $name . ' 不存在');
         }
+    }
+
+    //权限规则
+    public function behaviors()
+    {
+        return [
+            'rbac' => [
+                'class' => AdminFilter::className(),
+            ],
+        ];
     }
 }

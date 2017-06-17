@@ -2,6 +2,9 @@
 /**
  * @var $this \Yii\web\View
  */
+$this->title = $title;
+$this->params['breadcrumbs'][] = ['label'=>'商品分类首页','url'=>\yii\helpers\Url::to(['goods-category/index'])];
+$this->params['breadcrumbs'][] = $title;
 $form = \yii\bootstrap\ActiveForm::begin();
 echo $form->field($model, 'name');
 echo $form->field($model, 'parent_id')->hiddenInput();

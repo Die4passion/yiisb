@@ -1,3 +1,8 @@
+<?php
+$this->title = $title;
+//$this->params['breadcrumbs'][] = ['label'=>'文章列表','url'=>\yii\helpers\Url::to(['article/index'])];
+$this->params['breadcrumbs'][] = $title;
+?>
 <table class="table table-bordered table-hover">
     <tr>
         <th>权限</th>

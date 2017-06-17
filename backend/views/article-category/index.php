@@ -1,3 +1,8 @@
+<?php
+$this->title = $title;
+//$this->params['breadcrumbs'][] = ['label'=>'文章列表','url'=>\yii\helpers\Url::to(['article/index'])];
+$this->params['breadcrumbs'][] = $title;
+?>
 <table class="table table-bordered">
     <tr>
         <th>ID</th>
@@ -26,7 +31,7 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-2" style="margin-top: 25px;">
-            <?= \yii\bootstrap\Html::a('添加文章分类', ['article-category/add'], ['class' => 'btn btn-success']) ?>
+            <?= \yii\bootstrap\Html::a('添加文章分类', ['article-category/add'], ['class' => 'btn btn-info']) ?>
 
         </div>
         <div class="col-lg-4 col-lg-offset-6" >

@@ -1,4 +1,7 @@
 <?php
+$this->title = $title;
+$this->params['breadcrumbs'][] = ['label'=>'商品列表','url'=>\yii\helpers\Url::to(['goods/index'])];
+$this->params['breadcrumbs'][] = $title;
 $form = \yii\bootstrap\ActiveForm::begin();
 echo $form->field($model, 'name');
 echo $form->field($model, 'logo')->hiddenInput();

@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 
+use backend\filters\AdminFilter;
 use backend\models\Article;
 use backend\models\ArticleCategory;
 use backend\models\ArticleDetail;
@@ -17,17 +18,19 @@ class ArticleController extends Controller
         $model = new Article();
         $detail = new ArticleDetail();
         $cates = ArticleCategory::find()->where(['<>', 'status', '-1'])->all();
-        if ($model->load(\Yii::$app->request->post()) && $detail->load(\Yii::$app->request->post()) && $model->validate() && $detail->validate()) {
+        if ($model->load(\Yii::$app->request->post()) && $detail->load(\Yii::$app->request->post()) && $model->validate()) {
             $model->save(false);
             //根据插入的文章查找id
             $detail->article_id = $model->findone(['name' => $model->name])->id;
-//            var_dump($detail->article_id);
-//            die();
             $detail->save(false);
             \Yii::$app->session->setFlash('success', '添加文章-->' . $model->name . '成功!');
             return $this->redirect(['article/index']);
         } else {
-            return $this->render('add', ['model' => $model, 'cates' => $cates, 'detail' => $detail]);
+            return $this->render('add', ['model' => $model,
+                'cates' => $cates,
+                'detail' => $detail,
+                'title' => '添加文章'
+            ]);
         }
     }
 
@@ -41,10 +44,10 @@ class ArticleController extends Controller
     }
 
     //改
-    public function actionUpdtae($id)
+    public function actionUpdate($id)
     {
         $model = Article::findOne(['id' => $id]);
-        $detail = ArticleDetail::findOne(['id' => $id]);
+        $detail = ArticleDetail::findOne(['article_id' => $id]);
         $cates = ArticleCategory::find()->where(['<>', 'status', '-1'])->all();
         if ($model->save(\Yii::$app->request->post()) && $model->save() && $detail->load(\Yii::$app->request->post())) {
             $model->save(false);
@@ -53,7 +56,12 @@ class ArticleController extends Controller
             \Yii::$app->session->setFlash('success', '修改文章-->' . $model->name . '成功!');
             return $this->redirect(['article/index']);
         } else {
-            return $this->render('add', ['model' => $model, 'cates' => $cates, 'detail' => $detail]);
+            return $this->render('add', [
+                'model' => $model,
+                'cates' => $cates,
+                'detail' => $detail,
+                'title' => '编辑文章'
+            ]);
         }
     }
 
@@ -69,7 +77,7 @@ class ArticleController extends Controller
             ->offset($page->offset)
             ->limit($page->limit)
             ->all();
-        return $this->render('index', ['page' => $page, 'models' => $models]);
+        return $this->render('index', ['page' => $page, 'models' => $models, 'title' => '文章列表']);
     }
 
     //查内容
@@ -78,6 +86,20 @@ class ArticleController extends Controller
         $model = Article::findOne(['id' => $id]);
         $detail = ArticleDetail::find()->where(['article_id' => $id])->one();
         //var_dump($detail);die();
-        return $this->render('content', ['model' => $model, 'detail' => $detail]);
+        return $this->render('content', [
+            'model' => $model,
+            'detail' => $detail,
+            'title' => '文章内容',
+        ]);
+    }
+
+    //权限规则
+    public function behaviors()
+    {
+        return [
+            'rbac' => [
+                'class' => AdminFilter::className(),
+            ],
+        ];
     }
 }

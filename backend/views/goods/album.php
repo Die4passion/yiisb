@@ -2,6 +2,9 @@
 use xj\uploadify\Uploadify;
 use yii\bootstrap\Html;
 use yii\web\JsExpression;
+$this->title = $title;
+$this->params['breadcrumbs'][] = ['label'=>'商品列表','url'=>\yii\helpers\Url::to(['goods/index'])];
+$this->params['breadcrumbs'][] = $title;
 echo Html::fileInput('test', NULL, ['id' => 'test']);
 echo Uploadify::widget([
     'url' => yii\helpers\Url::to(['s-upload']),
