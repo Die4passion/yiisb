@@ -13,7 +13,9 @@ $this->params['breadcrumbs'][] = $title;
         <td>创建时间</td>
         <td>最后登录时间</td>
         <td>最后登录IP</td>
+        <?php if (Yii::$app->user->can('/admin/del')):?>
         <td>操作</td>
+        <?php endif;?>
     </tr>
     <?php foreach ($models as $model): ?>
         <tr id="admin_<?= $model->id ?>" data-id="<?= $model->id ?>">
@@ -28,11 +30,13 @@ $this->params['breadcrumbs'][] = $title;
             <td><?= date('Y-m-d', $model->created_at) ?></td>
             <td><?= date('Y-m-d', $model->last_login_time) ?></td>
             <td><?= $model->last_login_ip ?></td>
+            <?php if (Yii::$app->user->can('/admin/del')):?>
             <td>
                 <?= \yii\bootstrap\Html::a('修改', ['admin/update', 'id' => $model->id], ['class' => 'btn btn-sm btn-warning']) ?>
                 <?= \yii\bootstrap\Html::a('删除', ['admin/del', 'id' => $model->id], ['class' => 'btn btn-sm btn-danger del_btn']) ?>
                 <?= \yii\bootstrap\Html::a('修改密码', ['admin/reset-password', 'id' => $model->id], ['class' => 'btn btn-primary btn-sm']) ?>
             </td>
+            <?php endif;?>
         </tr>
     <?php endforeach; ?>
 </table>

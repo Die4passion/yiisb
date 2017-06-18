@@ -84,10 +84,16 @@ class AdminController extends Controller
         $model = new LoginForm();
         if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
             \Yii::$app->session->setFlash('success', $model->username . '：欢迎回到1024论坛 !');
-            return $this->redirect(['admin/index']);
+             return $this->goHome();
         } else {
             return $this->render('login', ['model' => $model]);
         }
+    }
+    //注销
+    public function actionLogout()
+    {
+        \Yii::$app->user->logout();
+        return $this->redirect(['admin/login']);
     }
 
     //修改密码

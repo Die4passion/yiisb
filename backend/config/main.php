@@ -62,5 +62,5 @@ return [
         ],
     ],
     'params' => $params,
-    'defaultRoute' => 'admin/index',
+    'defaultRoute' => 'site/index',
 ];

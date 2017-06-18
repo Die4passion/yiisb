@@ -3,15 +3,17 @@
 namespace backend\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "menu".
  *
  * @property integer $id
  * @property integer $parent_id
- * @property string $name
+ * @property string $label
  * @property string $url
  * @property string $description
+ * @property integer $sort
  */
 class Menu extends \yii\db\ActiveRecord
 {
@@ -29,11 +31,12 @@ class Menu extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['parent_id'], 'integer'],
-            [['name', 'url'], 'required'],
+            [['sort'], 'integer'],
+            [['label', 'sort'], 'required'],
             [['description'], 'string'],
-            [['name'], 'string', 'max' => 20],
-            [['url'], 'string', 'max' => 50],
+            [['label'], 'string', 'max' => 20],
+            [['url'], 'string', 'max' => 255],
+            [['parent_id'], 'compare', 'operator' => '!=', 'compareAttribute' => 'id', 'message' => '请不要设置自己当自己的儿子'],
         ];
     }
 
@@ -44,16 +47,37 @@ class Menu extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'parent_id' => '上级分类id',
-            'name' => '名称',
-            'url' => '路由(权限)',
+            'parent_id' => '上级菜单',
+            'name' => '标签名',
+            'url' => '地址/路由',
             'description' => '描述',
+            'sort' => '排序',
         ];
     }
 
-    //建立菜单间关系
+    //获取全部下级菜单
     public function getChildren()
     {
-        return $this->hasMany(self::className(), ['parent_id' => 'id']);
+        return $this->hasMany(self::className(), ['parent_id' => 'id'])->orderBy('sort');
     }
+
+    //获取当前上级菜单
+    public function getParent()
+    {
+        return $this->hasOne(self::className(), ['id' => 'parent_id']);
+    }
+
+    //获取全部顶级菜单
+    public static function getParents()
+    {
+        return [0 => '顶级分类'] + ArrayHelper::map(self::find()->where(['parent_id' => 0])->all(), 'id', 'label');
+    }
+    //保存前执行的代码
+//    public function beforeSave($insert)
+//    {
+//        if ($insert && !$this->parent_id) {
+//            $this->parent_id = 0;
+//        }
+//        return parent::beforeSave($insert);
+//    }
 }

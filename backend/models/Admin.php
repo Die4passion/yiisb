@@ -149,32 +149,32 @@ class Admin extends \yii\db\ActiveRecord implements IdentityInterface
     }
 
     //获取菜单选项
-    public function getMenuItems()
-    {
-        $menuItems = [];
-        //根据当前用户的权限获取菜单
-        //遍历所有菜单，判断当前用户是否有对应权限
-        //获取所有一级菜单
-        $menus = Menu::find()->where(['parent_id' => 0])->all();
-        foreach ($menus as $menu) {
-            //根据菜单之间的关系
-            $items = [];
-            foreach ($menu->children as $child) {
-                //判断用户是否有该权限
-                if (Yii::$app->user->can($child->url)) {
-                    $items[] = ['label' => $child->name, 'url' => [$child->url]];
-                }
-            }
-            //至少有一个二级菜单才显示该菜单组
-            if (!empty($items)) {
-                $menuItems[] = [
-                    'label' => $menu->name,
-                    'items' => $items,
-                ];
-            }
-        }
-        return $menuItems;
-    }
+//    public function getMenuItems()
+//    {
+//        $menuItems = [];
+//        //根据当前用户的权限获取菜单
+//        //遍历所有菜单，判断当前用户是否有对应权限
+//        //获取所有一级菜单
+//        $menus = Menu::find()->where(['parent_id' => 0])->all();
+//        foreach ($menus as $menu) {
+//            //根据菜单之间的关系
+//            $items = [];
+//            foreach ($menu->children as $child) {
+//                //判断用户是否有该权限
+//                if (Yii::$app->user->can($child->url)) {
+//                    $items[] = ['label' => $child->name, 'url' => [$child->url]];
+//                }
+//            }
+//            //至少有一个二级菜单才显示该菜单组
+//            if (!empty($items)) {
+//                $menuItems[] = [
+//                    'label' => $menu->name,
+//                    'items' => $items,
+//                ];
+//            }
+//        }
+//        return $menuItems;
+//    }
 
     //保存之前执行
     public function beforeSave($insert)
