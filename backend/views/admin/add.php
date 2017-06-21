@@ -1,6 +1,6 @@
 <?php
 $this->title = $title;
-//$this->params['breadcrumbs'][] = ['label'=>'文章列表','url'=>\yii\helpers\Url::to(['article/index'])];
+$this->params['breadcrumbs'][] = ['label'=>'管理员列表','url'=>\yii\helpers\Url::to(['admin/index'])];
 $this->params['breadcrumbs'][] = $title;
 $form = \yii\bootstrap\ActiveForm::begin();
 echo $form->field($model, 'username');

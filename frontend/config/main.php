@@ -17,9 +17,17 @@ return [
             'csrfParam' => '_csrf-frontend',
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => \frontend\models\Member::className(),
             'enableAutoLogin' => true,
+            'authTimeout' => 3600*24*7,
+            'on beforeLogin' => function($event) {
+                $member = $event->identity;
+                $member->last_login_time = time();
+                $member->last_login_ip = ip2long(Yii::$app->request->userIP);
+                $member->save(false);
+            },
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
+            'loginUrl' => ['user/login'],
         ],
         'session' => [
             // this is the name of the session cookie used for login on the frontend
@@ -41,10 +49,12 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            'suffix' => '.html',
             'rules' => [
             ],
         ],
 
     ],
     'params' => $params,
+    'defaultRoute' => 'user/index',
 ];

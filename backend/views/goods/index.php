@@ -25,35 +25,41 @@ echo '<div class="col-lg-2">' . \yii\bootstrap\Html::submitButton('搜索', ['cl
 \yii\bootstrap\ActiveForm::end();
 echo '</div></div>';
 ?>
-    <table class="table table-responsive table-bordered">
-        <tr>
-            <td>ID</td>
-            <td>商品名称</td>
-            <td>编号</td>
-            <td>价格</td>
-            <td>库存</td>
-            <td>logo</td>
-            <td>创建时间</td>
+<table class="table table-responsive table-bordered">
+    <tr>
+        <td>ID</td>
+        <td>商品名称</td>
+        <td>编号</td>
+        <td>价格</td>
+        <td>库存</td>
+        <td>logo</td>
+        <td>创建时间</td>
+        <?php if (Yii::$app->user->can('goods/del')): ?>
             <td>操作</td>
-        </tr>
-        <?php foreach ($models as $model): ?>
-            <tr>
-                <td><?= $model->id ?></td>
-                <td><?= $model->name ?></td>
-                <td><?= $model->sn ?></td>
-                <td><?= $model->shop_price ?></td>
-                <td><?= $model->stock ?></td>
-                <td style="text-align: center;"><?= $model->logo ? \yii\bootstrap\Html::img($model->logo, ['class' => 'img-rounded', 'height' => '50']) : '' ?></td>
-                <td><?= date('Y-m-d', $model->create_time) ?></td>
+        <?php endif; ?>
+    </tr>
+    <?php foreach ($models as $model): ?>
+        <tr>
+            <td><?= $model->id ?></td>
+            <td><?= $model->name ?></td>
+            <td><?= $model->sn ?></td>
+            <td><?= $model->shop_price ?></td>
+            <td><?= $model->stock ?></td>
+            <td style="text-align: center;"><?= $model->logo ? \yii\bootstrap\Html::img($model->logo, ['class' => 'img-rounded', 'height' => '50']) : '' ?></td>
+            <td><?= date('Y-m-d', $model->create_time) ?></td>
+            <?php if (Yii::$app->user->can('goods/del')): ?>
                 <td>
                     <?= \yii\bootstrap\Html::a('编辑相册', ['goods/album', 'id' => $model->id], ['class' => 'btn btn-sm btn-primary']) ?>
                     <?= \yii\bootstrap\Html::a('编辑', ['goods/update', 'id' => $model->id], ['class' => 'btn btn-sm btn-warning']) ?>
                     <?= \yii\bootstrap\Html::a('删除', ['goods/del', 'id' => $model->id], ['class' => 'btn btn-sm btn-danger']) ?>
                 </td>
-            </tr>
-        <?php endforeach; ?>
-    </table>
+            <?php endif; ?>
+        </tr>
+    <?php endforeach; ?>
+</table>
 <?= \yii\widgets\LinkPager::widget([
     'pagination' => $page,
-])?>
+]) ?>
+<?php if (Yii::$app->user->can('goods/add')): ?>
 <?= \yii\bootstrap\Html::a('添加商品', ['goods/add'], ['class' => 'btn btn-info']) ?>
+<?php endif; ?>

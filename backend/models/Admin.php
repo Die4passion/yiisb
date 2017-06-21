@@ -56,8 +56,8 @@ class Admin extends \yii\db\ActiveRecord implements IdentityInterface
             [['auth_key'], 'string', 'max' => 32],
             [['last_login_ip'], 'string', 'max' => 15],
             //注册时验证规则
-            [['username'], 'unique'],
-            [['email'], 'unique'],
+            [['username'], 'unique', 'on' => [self::SCENARIO_REGISTER]],
+            [['email'], 'unique', 'on' => [self::SCENARIO_REGISTER]],
             [['email'], 'email'],
             [['password_reset_token'], 'unique'],
         ];
@@ -197,4 +197,5 @@ class Admin extends \yii\db\ActiveRecord implements IdentityInterface
     }
     //登陆后执行
 //    public function after
+    //根据username返回id
 }

@@ -11,33 +11,30 @@ $this->params['breadcrumbs'][] = $title;
         <th>排序</th>
         <th>状态</th>
         <th>类型</th>
-        <th>操作</th>
+        <?php if (Yii::$app->user->can('article-category/del')): ?>
+            <th>操作</th>
+        <?php endif; ?>
     </tr>
-    <?php foreach ($models as $model):?>
-    <tr>
-        <td><?= $model->id ?></td>
-        <td><?= $model->name ?></td>
-        <td><?= $model->intro ?></td>
-        <td><?= $model->sort ?></td>
-        <td><?= \backend\models\ArticleCategory::$statusOptions[$model->status] ?></td>
-        <td><?= $model->is_help ?></td>
-        <td>
-            <?= \yii\bootstrap\Html::a('编辑', ['article-category/update', 'id' => $model->id], ['class' => 'btn btn-primary btn-sm']) ?>
-            <?= \yii\bootstrap\Html::a('删除', ['article-category/del', 'id' => $model->id], ['class' => 'btn btn-danger btn-sm']) ?>
-        </td>
-    </tr>
-    <?php endforeach;?>
+    <?php foreach ($models as $model): ?>
+        <tr>
+            <td><?= $model->id ?></td>
+            <td><?= $model->name ?></td>
+            <td><?= $model->intro ?></td>
+            <td><?= $model->sort ?></td>
+            <td><?= \backend\models\ArticleCategory::$statusOptions[$model->status] ?></td>
+            <td><?= $model->is_help ?></td>
+            <?php if (Yii::$app->user->can('article-category/del')): ?>
+                <td>
+                    <?= \yii\bootstrap\Html::a('编辑', ['article-category/update', 'id' => $model->id], ['class' => 'btn btn-primary btn-sm']) ?>
+                    <?= \yii\bootstrap\Html::a('删除', ['article-category/del', 'id' => $model->id], ['class' => 'btn btn-danger btn-sm']) ?>
+                </td>
+            <?php endif; ?>
+        </tr>
+    <?php endforeach; ?>
 </table>
-<div class="container">
-    <div class="row">
-        <div class="col-lg-2" style="margin-top: 25px;">
-            <?= \yii\bootstrap\Html::a('添加文章分类', ['article-category/add'], ['class' => 'btn btn-info']) ?>
+<?= \yii\widgets\LinkPager::widget(['pagination' => $page]) ?>
+<?php if (Yii::$app->user->can('article-category/add')): ?>
+<?= \yii\bootstrap\Html::a('添加文章分类', ['article-category/add'], ['class' => 'btn btn-info']) ?>
+<?php endif; ?>
 
-        </div>
-        <div class="col-lg-4 col-lg-offset-6" >
 
-            <?= \yii\widgets\LinkPager::widget(['pagination' => $page]) ?>
-        </div>
-
-    </div>
-</div>

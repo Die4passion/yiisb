@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 
 use backend\filters\AdminFilter;
+use backend\models\Goods;
 use backend\models\GoodsCategory;
 use yii\data\Pagination;
 use yii\helpers\ArrayHelper;
@@ -39,7 +40,9 @@ class GoodsCategoryController extends Controller
         $model = GoodsCategory::findOne(['id' => $id]);
         if (!$model->isLeaf()) {
             \Yii::$app->session->setFlash('warning', '请不要删除有子分类的商品分类');
-        } else {
+        } elseif (Goods::findOne(['goods_category_id' => $id])) {
+            \Yii::$app->session->setFlash('warning', '请不要删除有商品的商品分类');
+        }else {
             $model->delete();
             \Yii::$app->session->setFlash('success', '删除商品分类-->' . $model->name . '成功！');
         }

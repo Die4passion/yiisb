@@ -6,7 +6,7 @@ namespace backend\controllers;
 use backend\filters\AdminFilter;
 use backend\models\Admin;
 use backend\models\LoginForm;
-use backend\models\ResetPasswordForm;
+use backend\models\ChangePasswordForm;
 use backend\models\RoleForm;
 use yii\data\Pagination;
 use yii\filters\AccessControl;
@@ -84,11 +84,12 @@ class AdminController extends Controller
         $model = new LoginForm();
         if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
             \Yii::$app->session->setFlash('success', $model->username . '：欢迎回到1024论坛 !');
-             return $this->goHome();
+            return $this->goHome();
         } else {
             return $this->render('login', ['model' => $model]);
         }
     }
+
     //注销
     public function actionLogout()
     {
@@ -96,11 +97,11 @@ class AdminController extends Controller
         return $this->redirect(['admin/login']);
     }
 
-    //修改密码
-    public function actionResetPassword($id)
+    //修改自己的密码
+    public function actionChangePassword($id)
     {
         //实例化表单模型
-        $model = new ResetPasswordForm();
+        $model = new ChangePasswordForm();
         //查出一条数据
         $admin = Admin::findOne(['id' => $id]);
         //判断是否有post请求并赋值给￥model
@@ -111,8 +112,23 @@ class AdminController extends Controller
             \Yii::$app->session->setFlash('success', '修改密码成功');
             return $this->redirect(['admin/index']);
         } else {
-            return $this->render('reset-password', ['admin' => $admin, 'model' => $model, 'title' => '修改密码']);
+            return $this->render('change-password', ['admin' => $admin, 'model' => $model, 'title' => '修改密码']);
         }
+    }
+
+    //修改别人的密码
+    public function actionResetPassword($id)
+    {
+        $model = Admin::findOne(['id' => $id]);
+        if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
+            if ($model->save()) {
+                \Yii::$app->session->setFlash('success', '重置管理员-->' . $model->username . '->密码成功，新密码是' . $model->password);
+            } else {
+                \Yii::$app->session->setFlash('warning', '操作失败！！！');
+            }
+            return $this->redirect(['admin/index']);
+        }
+        return $this->render('reset-password', ['model' => $model, 'title' => '重置密码']);
     }
 
     //行为

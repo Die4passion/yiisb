@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use backend\filters\AdminFilter;
 use backend\models\Brand;
+use backend\models\Goods;
 use yii\data\Pagination;
 use yii\web\UploadedFile;
 use xj\uploadify\UploadAction;
@@ -51,10 +52,14 @@ class BrandController extends \yii\web\Controller
     //删
     public function actionDel($id)
     {
-        $model = Brand::findOne(['id' => $id]);
-        $model->status = -1;
-        $model->save(false);
-        \Yii::$app->session->setFlash('success', '删除' . $model->name . '成功');
+        if (Goods::findOne(['brand_id' => $id])) {
+            \Yii::$app->session->setFlash('warning', '请不要删除有商品的品牌分类');
+        } else {
+            $model = Brand::findOne(['id' => $id]);
+            $model->status = -1;
+            $model->save(false);
+            \Yii::$app->session->setFlash('success', '删除' . $model->name . '成功');
+        }
         return $this->redirect(['brand/index']);
     }
 

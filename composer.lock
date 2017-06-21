@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1a39fa83a8b24f7300e436ea4cc8a4ea",
+    "content-hash": "e651ee3934f283cfad151635815c4dd2",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -552,6 +552,43 @@
                 "storage"
             ],
             "time": "2017-04-28T10:15:08+00:00"
+        },
+        {
+            "name": "light/yii2-layer",
+            "version": "0.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lichunqiang/yii2-layer.git",
+                "reference": "fb592a63b2e3200169c191f9cebecf527f843263"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/lichunqiang/yii2-layer/fb592a63b2e3200169c191f9cebecf527f843263.zip",
+                "reference": "fb592a63b2e3200169c191f9cebecf527f843263",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0",
+                "yiisoft/yii2": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "light\\assets\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "lichunqiang",
+                    "email": "light-li@hotmail.com"
+                }
+            ],
+            "description": "yii2 asset plugin for layer",
+            "time": "2015-04-24T16:07:16+00:00"
         },
         {
             "name": "qiniu/php-sdk",

@@ -3,7 +3,9 @@
 namespace backend\controllers;
 
 use backend\filters\AdminFilter;
+use backend\models\Article;
 use backend\models\ArticleCategory;
+use backend\models\Goods;
 use yii\data\Pagination;
 
 class ArticleCategoryController extends \yii\web\Controller
@@ -40,10 +42,14 @@ class ArticleCategoryController extends \yii\web\Controller
     //删
     public function actionDel($id)
     {
-        $model = ArticleCategory::findOne(['id' => $id]);
-        $model->status = -1;
-        $model->save(false);
-        \Yii::$app->session->setFlash('success', '删除分类-->' . $model->name . '成功');
+        if (Article::findOne(['article_category_id' => $id])) {
+            \Yii::$app->session->setFlash('warning', '请不要删除有文章的文章分类');
+        } else {
+            $model = ArticleCategory::findOne(['id' => $id]);
+            $model->status = -1;
+            $model->save(false);
+            \Yii::$app->session->setFlash('success', '删除分类-->' . $model->name . '成功');
+        }
         return $this->redirect(['article-category/index']);
     }
 

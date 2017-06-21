@@ -3,30 +3,36 @@ $this->title = $title;
 //$this->params['breadcrumbs'][] = ['label'=>'商品首页','url'=>\yii\helpers\Url::to(['goods-category/index'])];
 $this->params['breadcrumbs'][] = $title;
 ?>
-<table class="cate table table-bordered table-responsive table-hover">
-    <tr>
-        <th>ID</th>
-        <th>名称</th>
-        <th>简介</th>
-        <th>操作</th>
-    </tr>
-    <?php foreach ($models as $model): ?>
-        <tr data-lft="<?= $model->lft ?>" data-rgt="<?= $model->rgt ?>" data-tree="<?= $model->tree ?>"
-            data-depth="<?= $model->depth ?>">
-            <td><?= $model->id ?></td>
-            <td><?= str_repeat('▬▬ ', $model->depth) . $model->name ?>
-                <?= $model->isLeaf() ? '' : '<span class="toggle_cate glyphicon glyphicon-chevron-up" style="float: right">
-                </span>' ?>
-            </td>
-            <td><?= $model->intro ?></td>
-            <td>
-                <?= \yii\bootstrap\Html::a('编辑', ['goods-category/update', 'id' => $model->id], ['class' => 'btn btn-primary btn-sm']) ?>
-                <?= \yii\bootstrap\Html::a('删除', ['goods-category/del', 'id' => $model->id], ['class' => 'btn btn-danger btn-sm']) ?>
-            </td>
+    <table class="cate table table-bordered table-responsive table-hover">
+        <tr>
+            <th>ID</th>
+            <th>名称</th>
+            <th>简介</th>
+            <?php if (Yii::$app->user->can('goods-category/del')): ?>
+                <th>操作</th>
+            <?php endif; ?>
         </tr>
-    <?php endforeach; ?>
-</table>
-<?= \yii\bootstrap\Html::a('添加商品分类', ['goods-category/add'], ['class' => 'btn btn-info']) ?>
+        <?php foreach ($models as $model): ?>
+            <tr data-lft="<?= $model->lft ?>" data-rgt="<?= $model->rgt ?>" data-tree="<?= $model->tree ?>"
+                data-depth="<?= $model->depth ?>">
+                <td><?= $model->id ?></td>
+                <td><?= str_repeat('▬▬ ', $model->depth) . $model->name ?>
+                    <?= $model->isLeaf() ? '' : '<span class="toggle_cate glyphicon glyphicon-chevron-up" style="float: right">
+                </span>' ?>
+                </td>
+                <td><?= $model->intro ?></td>
+                <?php if (Yii::$app->user->can('goods-category/del')): ?>
+                    <td>
+                        <?= \yii\bootstrap\Html::a('编辑', ['goods-category/update', 'id' => $model->id], ['class' => 'btn btn-primary btn-sm']) ?>
+                        <?= \yii\bootstrap\Html::a('删除', ['goods-category/del', 'id' => $model->id], ['class' => 'btn btn-danger btn-sm']) ?>
+                    </td>
+                <?php endif; ?>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+<?php if (Yii::$app->user->can('goods-category/add')): ?>
+    <?= \yii\bootstrap\Html::a('添加商品分类', ['goods-category/add'], ['class' => 'btn btn-info']) ?>
+<?php endif; ?>
 <?php
 $js = <<<JS
 $(".toggle_cate").on("click",function () {
