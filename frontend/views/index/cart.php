@@ -5,13 +5,15 @@
 $this->registerCssFile('@web/style/cart.css');
 $this->registerCssFile('@web/style/success.css');
 $this->registerJsFile('@web/js/cart1.js');
+use yii\helpers\Html;
+use yii\helpers\Url;
 ?>
     <div style="clear:both;"></div>
 
     <!-- 页面头部 start -->
     <div class="header w990 bc mt15">
         <div class="logo w990">
-            <h2 class="fl"><a href="index.html"><img src="images/logo.png" alt="京西商城"></a></h2>
+            <h2 class="fl"><?= Html::a(Html::img('@web/images/logo.png'), Url::to(['index/index']))?></h2>
             <div class="flow fr">
                 <ul>
                     <li class="cur">1.我的购物车</li>

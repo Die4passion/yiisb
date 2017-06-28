@@ -304,6 +304,7 @@ class IndexController extends Controller
             $order->total = $price;
             //开启事务
             $transaction = \Yii::$app->db->beginTransaction();
+            $e = '1';
             try {
                 $order->save();
                 //订单商品详情表
@@ -341,9 +342,12 @@ class IndexController extends Controller
                 //回滚
                 $transaction->rollBack();
             }
-            return $order->id;
+            if ($e === '1') {
+                return $e;
+            } else {
+                return $e->getMessage();
+            }
         }
-        return null;
     }
 
     //提交成功页面

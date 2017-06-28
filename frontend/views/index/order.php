@@ -10,7 +10,7 @@ $this->registerJsFile('@web/js/cart2.js');
     <!-- 页面头部 start -->
     <div class="header w990 bc mt15">
         <div class="logo w990">
-            <h2 class="fl"><a href="index.html"><img src="images/logo.png" alt="京西商城"></a></h2>
+            <h2 class="fl"><?= \yii\helpers\Html::a(\yii\helpers\Html::img('@web/images/logo.png'), \yii\helpers\Url::to(['index/index']))?></h2>
             <div class="flow fr flow2">
                 <ul>
                     <li>1.我的购物车</li>
@@ -193,6 +193,7 @@ $this->registerJsFile('@web/js/cart2.js');
 <?php
 //用ajax传值还有一个问题，如何回显php的错误异常
 $url = \yii\helpers\Url::to(['index/payment']);
+$url1 = \yii\helpers\Url::to(['index/cart']);
 $url2 = \yii\helpers\Url::to(['index/order-save']);
 $token = Yii::$app->request->csrfToken;
 $this->registerJs(new \yii\web\JsExpression(
@@ -223,7 +224,10 @@ $this->registerJs(new \yii\web\JsExpression(
         var payment=$('[name="pay"]:checked').val() - 1;
         var address=$('[name="address_id"]:checked').val() - 1;
     $.post("$url",{address_id:address, payment_id:payment, delivery_id:delivery, price:pay,"_csrf-frontend":"$token"},function(response) {
-            if(response !== null){
+            if(response !== '1'){
+                alert(response);
+                window.location.href = "$url1";
+            } else {
                 window.location.href = "$url2";
             }
         });

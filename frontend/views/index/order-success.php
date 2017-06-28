@@ -9,7 +9,7 @@ $this->registerCssFile('@web/style/success.css');
 <!-- 页面头部 start -->
 <div class="header w990 bc mt15">
     <div class="logo w990">
-        <h2 class="fl"><a href="index.html"><img src="images/logo.png" alt="京西商城"></a></h2>
+        <h2 class="fl"><?= \yii\helpers\Html::a(\yii\helpers\Html::img('@web/images/logo.png'), \yii\helpers\Url::to(['index/index']))?></h2>
         <div class="flow fr flow3">
             <ul>
                 <li>1.我的购物车</li>
