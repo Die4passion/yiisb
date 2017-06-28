@@ -49,12 +49,21 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'suffix' => '.html',
+//            'suffix' => '.html',
             'rules' => [
             ],
         ],
-
+        //配置短信验证组件
+        'smsCaptcha' => [
+            'class' => \frontend\components\SmsCaptcha::className(),
+            'app_key' => '24478196',
+            'app_secret' => 'b9677931be9fa82727d2b0decbf28807',
+            'sign_name'=>'小航的博客',
+            'template_code'=>'SMS_71475156',
+        ]
     ],
     'params' => $params,
-    'defaultRoute' => 'user/index',
+    //默认路由和布局文件
+    'defaultRoute' => 'index/index',
+    'layout' => 'index',
 ];

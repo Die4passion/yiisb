@@ -31,6 +31,9 @@
                 <?php endif;?>
                 <?= $form->field($model, 'email')->textInput(['class' => 'txt', 'placeholder' => '推荐使用Gmail或QQ邮箱'])->label('邮箱 ：'); ?>
                 <?= $form->field($model, 'tel')->textInput(['class' => 'txt', 'placeholder' => '请输入11位中国大陆手机号'])->label('手机号 ：'); ?>
+                <?php if($model->isNewRecord):?>
+                    <?= $form->field($model,'sms_captcha',['options'=>['class'=>'checkcode']])->textInput(['class'=>'txt','id'=>'sms_input','disabled'=>true])->hint(\yii\helpers\Html::button('发送短信验证码',['id'=>'send_sms_button']), ['tag' => null])->label('短信验证码：') ?>
+                <?php endif;?>
                 <?= $form->field($model, 'captcha', ['options' => ['class' => 'checkcode']])->widget(\yii\captcha\Captcha::className(), ['template' => '{input}{image}'])->label('验证码： '); ?>
                 <?= $form->field($model, 'agree')->checkbox(['class' => 'chb', 'uncheck' => null], $enclosedByLabel = false)->label('&nbsp;')->hint('我已年满18岁并遵守《MIT licence》', ['tag' => null]); ?>
 
@@ -52,3 +55,34 @@
 
     </div>
 </div>
+<script>
+    $("#send_sms_button").click(function(){
+        //发送验证码按钮被点击时
+        //手机号
+        var tel = $("#member-tel").val();
+        //AJAX post提交tel参数到 user/send-sms
+        $.post('<?= \yii\helpers\Url::to(['user/send-sms']) ?>',{tel:tel},function(data){
+            if(data == 'success'){
+                console.log('短信发送成功');
+//                alert('短信发送成功');
+                $('#sms_input').prop('disabled',false);
+
+                var time=60;
+                var interval = setInterval(function(){
+                    time--;
+                    if(time<=0){
+                        clearInterval(interval);
+                        var html = '获取验证码';
+                        $('#send_sms_button').prop('disabled',false);
+                    } else{
+                        var html = time + ' 秒后再次获取';
+                        $('#send_sms_button').prop('disabled',true);
+                    }
+                    $('#send_sms_button').html(html);
+                },1000);
+            }else{
+                console.log(data);
+            }
+        });
+    });
+</script>

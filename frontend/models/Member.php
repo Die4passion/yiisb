@@ -30,6 +30,7 @@ class Member extends \yii\db\ActiveRecord implements IdentityInterface
     public $captcha;
     public $re_password;
     public $agree;
+    public $sms_captcha;
 
     const SCENARIO_REGISTER = 'register';
 
@@ -48,7 +49,7 @@ class Member extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return [
             [['username', 'tel', 'email'], 'required'],
-            [['re_password', 'password'], 'required', 'on' => self::SCENARIO_REGISTER],
+            [['re_password', 'password', 'sms_captcha'], 'required', 'on' => self::SCENARIO_REGISTER],
             [['last_login_time', 'last_login_ip', 'status', 'created_at', 'updated_at'], 'integer'],
             [['password'], 'string', 'length' => [6, 12], 'tooShort' => '密码长度不够', 'tooLong' => '密码不能太长啦', 'on' => self::SCENARIO_REGISTER],
             [['username'], 'string', 'max' => 50],
@@ -61,6 +62,8 @@ class Member extends \yii\db\ActiveRecord implements IdentityInterface
             [['captcha'], 'captcha'],
             [['re_password'], 'compare', 'compareAttribute' => 'password', 'message' => '两次密码不一致!', 'on' => self::SCENARIO_REGISTER],
             [['agree'], 'required', 'requiredValue' => true, 'message' => '你必须遵守MIT协议！', 'on' => self::SCENARIO_REGISTER],
+            //短信验证规则
+            [['sms_captcha'], 'validateSms', 'on' => self::SCENARIO_REGISTER]
         ];
     }
 
@@ -85,33 +88,43 @@ class Member extends \yii\db\ActiveRecord implements IdentityInterface
             'captcha' => '验证码',
             're_password' => '确认密码',
             'agree' => '我已年满18岁并遵守《MIT licence》',
+            'sms_captcha' => '短信验证码'
         ];
     }
 
-    public function behaviors()
-    {
-        return [[
-            'class' => TimestampBehavior::className(),
-            'attributes' => [
-                'createdAtAttribute' => 'create_time',
-                'updatedAtAttribute' => 'update_time',
-            ]
-        ]];
-    }
+//    public function behaviors()
+//    {
+//        return [[
+//            'class' => TimestampBehavior::className(),
+//            'attributes' => [
+//                'createdAtAttribute' => 'create_time',
+//                'updatedAtAttribute' => 'update_time',
+//            ]
+//        ]];
+//    }
 
+    //短信验证规则
+    public function validateSms()
+    {
+        //缓存里面没有该电话号码
+        $value = Yii::$app->cache->get('tel_'.$this->tel);
+        if(!$value || $this->sms_captcha != $value){
+            $this->addError('sms_captcha','验证码不正确');
+        }
+    }
     //保存之前执行
     public function beforeSave($insert)
     {
-//        if ($insert) {
-//            //创建时间
-//            $this->created_at = time();
-//            //加入状态
-//            $this->status = 1;
-//            //     ↓↓   下面表示更新数据，但是要排除更新的是最后登录时间和最后登录ip，这样就能完美记录用户修改的时间了。
-//        } elseif ($this->last_login_time == $this->getOldAttribute('last_login_time') && $this->last_login_ip == $this->getOldAttribute('last_login_ip')) {
-//            //修改时间
-//            $this->updated_at = time();
-//        }
+        if ($insert) {
+            //创建时间
+            $this->created_at = time();
+            //加入状态
+            $this->status = 1;
+            //     ↓↓   下面表示更新数据，但是要排除更新的是最后登录时间和最后登录ip，这样就能完美记录用户修改的时间了。
+        } elseif ($this->last_login_time == $this->getOldAttribute('last_login_time') && $this->last_login_ip == $this->getOldAttribute('last_login_ip')) {
+            //修改时间
+            $this->updated_at = time();
+        }
         if ($this->password) {
             //密码加密
             $this->password_hash = Yii::$app->security->generatePasswordHash($this->password);

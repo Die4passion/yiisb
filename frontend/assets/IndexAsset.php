@@ -16,15 +16,19 @@ class IndexAsset extends AssetBundle
         'style/global.css',
         'style/header.css',
         'style/footer.css',
-        'style/index.css',
+//        'style/index.css',
         'style/bottomnav.css',
     ];
     public $js = [
         'js/header.js',
         'js/index.js',
+//        'js/jqzoom-core.js',
     ];
     public $depends = [
         'yii\web\JqueryAsset',
+    ];
+    public $jsOptions = [
+        'position' => \yii\web\View::POS_HEAD
     ];
 }
 

@@ -25,7 +25,7 @@ $(function(){
 		$(this).hide();
 		$(".delivery_info").hide();
 		$(".delivery_select").show();
-	})
+	});
 
 	$("input[name=delivery]").click(function(){
 		$(this).parent().parent().addClass("cur").siblings().removeClass("cur");
@@ -36,7 +36,7 @@ $(function(){
 		$(this).hide();
 		$(".pay_info").hide();
 		$(".pay_select").show();
-	})
+	});
 
 	$("input[name=pay]").click(function(){
 		$(this).parent().parent().addClass("cur").siblings().removeClass("cur");
@@ -47,7 +47,7 @@ $(function(){
 		$(this).hide();
 		$(".receipt_info").hide();
 		$(".receipt_select").show();
-	})
+	});
 
 	$(".company").click(function(){
 		$(".company_input").removeAttr("disabled");

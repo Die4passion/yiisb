@@ -105,12 +105,10 @@ class Goods extends \yii\db\ActiveRecord
         return $this->hasOne(GoodsCategory::className(), ['id' => 'goods_category_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getGoodsIntros()
+    //商品和商品详情
+    public function getGoodsIntro()
     {
-        return $this->hasMany(GoodsIntro::className(), ['goods_id' => 'id']);
+        return $this->hasOne(GoodsIntro::className(), ['goods_id' => 'id']);
     }
     //商品和相册关系
     public function getAlbums()

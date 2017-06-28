@@ -34,9 +34,9 @@ class Address extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['member_id', 'province', 'city', 'is_default'], 'integer'],
+            [['member_id', 'is_default'], 'integer'],
             [['name', 'tel', 'province', 'city', 'area', 'address'], 'required'],
-            [['name'], 'string', 'max' => 50],
+            [['name', 'province', 'city', 'area'], 'string', 'max' => 50],
             [['tel'], 'string', 'max' => 11],
             [['area', 'address'], 'string', 'max' => 255],
             [['member_id'], 'exist', 'skipOnError' => true, 'targetClass' => Member::className(), 'targetAttribute' => ['member_id' => 'id']],
@@ -65,18 +65,5 @@ class Address extends \yii\db\ActiveRecord
     {
         $this->member_id = \Yii::$app->user->getId();
         return parent::beforeSave($insert);
-    }
-
-    public function getProvincev()
-    {
-        return $this->hasOne(Locations::className(),['id'=>'province']);
-    }
-    public function getCityv()
-    {
-        return $this->hasOne(Locations::className(),['id'=>'city']);
-    }
-    public function getAreav()
-    {
-        return $this->hasOne(Locations::className(),['id'=>'area']);
     }
 }

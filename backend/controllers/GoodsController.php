@@ -189,6 +189,12 @@ class GoodsController extends Controller
                         $model->save();
                     }
                     $action->output['fileUrl'] = $action->getWebUrl();
+
+                    $imgUrl = $action->getWebUrl();
+                    $qiniu = \Yii::$app->qiniu;
+                    $qiniu->uploadFile(\Yii::getAlias('@webroot') . $imgUrl, $imgUrl);
+                    $url = $qiniu->getLink($imgUrl);
+                    $action->output['fileUrl'] = $url;
                 },
             ],
             'upload' => [
