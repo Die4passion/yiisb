@@ -19,8 +19,7 @@ use yii\helpers\Url;
 <div class="list w1210 bc mt10">
     <!-- 面包屑导航 start -->
     <div class="breadcrumb">
-        <h2>当前位置：<?= Html::a('首页', Url::home()); ?><?php foreach ($categories as $category): ?>
-            > <?= Html::a($category->name,Url::to(['index/list','id'=>$category->id]))?> <?php endforeach; ?></h2>
+        <h2>当前位置：<?= Html::a('首页', Url::home()); ?>> 搜索</h2>
     </div>
     <!-- 面包屑导航 end -->
 

@@ -17,8 +17,8 @@ class LoginForm extends Model
         return [
             [['username', 'password'], 'required'],
             [['username'], 'validateUsername'],
-            [['captcha'], 'captcha'],
-            [['remember'], 'boolean'],
+//            [['captcha'], 'captcha'],
+//            [['remember'], 'boolean'],
         ];
     }
 

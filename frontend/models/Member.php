@@ -59,7 +59,7 @@ class Member extends \yii\db\ActiveRecord implements IdentityInterface
             [['username'], 'unique', 'message' => '该账号已注册，请直接登录！', 'on' => self::SCENARIO_REGISTER],
             [['tel'], 'unique', 'message' => '该手机号已被注册！', 'on' => self::SCENARIO_REGISTER],
             [['email'], 'unique', 'message' => '该邮箱已被注册！', 'on' => self::SCENARIO_REGISTER],
-            [['captcha'], 'captcha'],
+            [['captcha'], 'captcha',  'on' => self::SCENARIO_REGISTER],
             [['re_password'], 'compare', 'compareAttribute' => 'password', 'message' => '两次密码不一致!', 'on' => self::SCENARIO_REGISTER],
             [['agree'], 'required', 'requiredValue' => true, 'message' => '你必须遵守MIT协议！', 'on' => self::SCENARIO_REGISTER],
             //短信验证规则

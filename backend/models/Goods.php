@@ -54,9 +54,8 @@ class Goods extends \yii\db\ActiveRecord
             [['name', 'sn'], 'required'],
             [['goods_category_id', 'stock', 'brand_id', 'is_on_sale', 'status', 'sort', 'create_time'], 'integer'],
             [['market_price', 'shop_price'], 'number'],
-            [['name', 'sn'], 'string', 'max' => 20],
+            [['name', 'sn', 'logo'], 'string', 'max' => 255],
             [['name'], 'unique'],
-            [['logo'], 'string', 'max' => 255],
             [['brand_id'], 'exist', 'skipOnError' => false, 'targetClass' => Brand::className(), 'targetAttribute' => ['brand_id' => 'id']],
             [['goods_category_id'], 'exist', 'skipOnError' => false, 'targetClass' => GoodsCategory::className(), 'targetAttribute' => ['goods_category_id' => 'id']],
         ];
@@ -110,11 +109,13 @@ class Goods extends \yii\db\ActiveRecord
     {
         return $this->hasOne(GoodsIntro::className(), ['goods_id' => 'id']);
     }
+
     //商品和相册关系
     public function getAlbums()
     {
-        return $this->hasMany(GoodsAlbum::className(),['goods_id'=>'id']);
+        return $this->hasMany(GoodsAlbum::className(), ['goods_id' => 'id']);
     }
+
     public function beforeSave($insert)
     {
         if ($insert) {

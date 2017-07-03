@@ -34,6 +34,8 @@ class GoodsCategoryWidget extends Widget
         $cart = Html::a('去购物车结算', Url::to(['index/cart']));
         //订单
         $order = Html::a('我的订单>', Url::to(['index/order']));
+        //搜索
+        $search = Url::to(['index/search']);
         $html1 = <<<HTML
 <div class="header w1210 bc mt15">
     <!-- 头部上半部分 start 包括 logo、搜索、用户中心和购物车结算 -->
@@ -43,8 +45,8 @@ class GoodsCategoryWidget extends Widget
         <div class="search fl">
             <div class="search_form">
                 <div class="form_left fl"></div>
-                <form action="" name="search" method="get" class="fl">
-                    <input type="text" class="txt" value="请输入商品关键字" />
+                <form action="{$search}" name="search" method="get" class="fl">
+                    <input name="key" type="text" class="txt" value="请输入商品关键字" />
                     <input type="submit" class="btn" value="搜索" />
                 </form>
                 <div class="form_right fl"></div>
@@ -169,7 +171,7 @@ HTML;
         </div>
 HTML;
 //        将查出来的数据保存到缓存
-            $cache->set($id, $html2);
+            $cache->set($id, $html2, 3600*7);
         }
         //导航最后
         $html3 = <<<HTML

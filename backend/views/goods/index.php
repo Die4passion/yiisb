@@ -61,5 +61,6 @@ echo '</div></div>';
     'pagination' => $page,
 ]) ?>
 <?php if (Yii::$app->user->can('goods/add')): ?>
+    <br>
 <?= \yii\bootstrap\Html::a('添加商品', ['goods/add'], ['class' => 'btn btn-info']) ?>
 <?php endif; ?>
